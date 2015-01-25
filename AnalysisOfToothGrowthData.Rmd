@@ -2,7 +2,7 @@
 title: "Tooth Growth Analysis"
 author: "David Thayer"
 date: "Sunday, January 25, 2015"
-output: html_document
+output: word_document
 ---
 
 We will load the Tooth Growth data set and provide a summary and exploration of the data set.  
@@ -10,20 +10,16 @@ We will load the Tooth Growth data set and provide a summary and exploration of 
 We will then determine if given the size of the groups the differences between the means in each group atre statistically significant.
 
 
-```{r}
+```{r, echo = FALSE}
 library(datasets)
 library(dplyr)
 data(ToothGrowth)
 tg <- ToothGrowth
-class(tg)
-summary(tg)
 ```
-
-The following table lists the size of each subject group
-
 ```{r}
-count(tg, dose, supp)
+summary(ToothGrowth) ##summarise ToothGrowth
 ```
+
 
 The following table lists the mean tooth length for each group
 
@@ -39,5 +35,17 @@ ag <- aggregate(len ~ ., data = ToothGrowth, sd)
 xtabs(len ~ ., data = ag)
 ```
 
+Next we display confidence intervals for our three dosage groups
+```{r, echo=FALSE }
+group50 <- filter(ToothGrowth, dose == 0.5)
+group100 <- filter(ToothGrowth, dose == 1.0)
+group200 <- filter(ToothGrowth, dose == 2.0)
 
+plot(len ~ supp, data = group50, main = "Box Plot for subjects with dose = 0.5")
+plot(len ~ supp, data = group100,  main = "Box Plot for subjects with dose = 1.0")
+plot(len ~ supp, data = group200,  main = "Box Plot for subjects with dose = 2.0")
+```
 
+From this it is apparent thet the differences in mean between the two treatments is significant for dose levels 0.5 and 1.0 but are insignificant for dose rates 2.0.
+
+This is assuming that all variables are distributed according to a normal distribution.
