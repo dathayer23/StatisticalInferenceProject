@@ -1,0 +1,43 @@
+---
+title: "Tooth Growth Analysis"
+author: "David Thayer"
+date: "Sunday, January 25, 2015"
+output: html_document
+---
+
+We will load the Tooth Growth data set and provide a summary and exploration of the data set.  
+
+We will then determine if given the size of the groups the differences between the means in each group atre statistically significant.
+
+
+```{r}
+library(datasets)
+library(dplyr)
+data(ToothGrowth)
+tg <- ToothGrowth
+class(tg)
+summary(tg)
+```
+
+The following table lists the size of each subject group
+
+```{r}
+count(tg, dose, supp)
+```
+
+The following table lists the mean tooth length for each group
+
+```{r}
+ag <- aggregate(len ~ ., data = ToothGrowth, mean)
+xtabs(len ~ ., data = ag)
+```
+
+The following table lists the standard deviation of the tooth length for each group
+
+```{r}
+ag <- aggregate(len ~ ., data = ToothGrowth, sd)
+xtabs(len ~ ., data = ag)
+```
+
+
+

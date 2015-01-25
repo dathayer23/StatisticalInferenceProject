@@ -1,0 +1,66 @@
+---
+title: "Statistical Inference Project"
+author: "David Thayer"
+date: "Saturday, January 24, 2015"
+output: word_document
+---
+
+In this report we will investigate the exponential distribution and the Central Limit Theorem.  We will draw 1000 samples of a vector of 40 values drawn from the exponential function and compare the sample mean  with the theoretical mean. We will also investigate the sample variance compared to the theoretical variance.
+
+```{r}
+mns <- sapply(1:1000, function(i) { mean(rexp(40, 0.2))})
+stddevs <- sapply(1:1000, function(i) { sd(rexp(40, 0.2))})
+smplMean <- mean(mns)
+smplStdDev <- mean(stddevs)
+
+delta <- abs(5.0 - smplMean)
+deltaVar <- abs(5.0 - smplStdDev)
+```
+
+The following summary of the sample means indicates that the mean of the collection of samples is very close to the theoretical mean of 5.0.
+```{r}
+summary(mns)
+## sample variance
+sd(mns)
+## theoretical variance
+5*5/40
+```
+The sample variance and mean are very close to the theoretical values.
+
+Examining a histogram of the sample means we see that it looks very close to a bell shaped normal curve.
+
+```{r, echo=FALSE}
+hist(mns)
+```
+
+The following summary of the sample variance indicates that the variance of the collection of samples is very close to the theoretical mean of 5.0.
+```{r}
+summary(stddevs)
+sd(stddevs)
+```
+
+
+```{r, echo=FALSE}
+hist(stddevs)
+
+```
+Examining the quantiles of the sample distribution versus the quantiles of the normal(5,5) distribution we find the differences between corresponding quantiles are very small.  
+
+```{r}
+d1 <- quantile(mns, seq(from = 0.05, to = 1.0, by = 0.05))
+d2 <- quantile(rnorm(5.0,5.0), seq(from = 0.05, to = 1.0, by = 0.05))
+```
+The differences between the sets of quantiles are listed below.
+```{r}
+d2 - d1
+```
+Plotting the two sets of quantiles we can visually compare them.
+```{r, echo=FALSE}
+plot(1:length(d1), d1, type = "l", col="red", ylab = "cumulative value",  xlab = "value of quantiles at 0.05 intervals for sample and normal distributions", main = "Comparison of normal distribution and samples of 40 exponentials" )
+lines(1:length(d2), d2, type = "l", col = "green")
+legend("topleft", c("sample means","normal(5,5)"), col = c("red","green"), lty = 1)
+
+```
+
+Comparing the plots of the quantile values of the sample means and the quantiles of the normal distribution with the theoretical mean and variance are close to each other.  This is a good indicator that the distribution of the sample means is normal.
+
